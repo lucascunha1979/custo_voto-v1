@@ -8,6 +8,7 @@
 let candidaturas = [];
 let resumoGeral = null;
 let metadados = null;
+let detalhamento = null;
 
 let dadosFiltrados = [];
 let paginaAtual = 1;
@@ -49,6 +50,97 @@ function soma(lista, indicador) {
   );
 }
 
+function estatisticas(lista) {
+  const validos = lista.filter(c => c.vinculo_validado && Number.isFinite(c.votos) && c.votos >= 0);
+  return { total: lista.length, votos: validos.reduce((n,c)=>n+c.votos,0),
+    receitas: soma(validos,"receitas_total"), contratadas: soma(validos,"despesas_contratadas"), pagas: soma(validos,"despesas_pagas"),
+    receitasTodos: soma(lista,"receitas_total"), contratadasTodos: soma(lista,"despesas_contratadas"), pagasTodos: soma(lista,"despesas_pagas") };
+}
+function custoVoto(e,campo) {return e.votos>0 ? e[campo] / (100*e.votos) : null;}
+const numeroDecimal = v => new Intl.NumberFormat("pt-BR",{minimumFractionDigits:2,maximumFractionDigits:2}).format(v);
+function barraHorizontal(id, linhas, unidade="R$") {
+ const itens=[...linhas].sort((a,b)=>b.valor-a.valor);
+ const altura=Math.max(420,120+itens.length*33);
+ $(id).style.height=altura+"px";
+ Plotly.react(id,[{type:"bar",orientation:"h",y:itens.map(x=>x.nome).reverse(),x:itens.map(x=>x.valor).reverse(),
+ customdata:itens.map(x=>unidade==="Votos"?inteiro(x.valor):unidade==="R$/voto"?reais(Math.round(x.valor*100)):reais(Math.round(x.valor*100))).reverse(),
+ marker:{color:"#1555a5"},hovertemplate:"%{y}: %{customdata}<extra></extra>"}],
+ {...LAYOUT_BASE,height:altura,margin:{l:175,r:30,t:20,b:72},xaxis:{title:unidade,automargin:true,tickformat:",.0f"},yaxis:{automargin:true}},CONFIG);
+}
+function grupoPartidos(lista) {
+ const m=new Map();lista.forEach(c=>{if(!m.has(c.partido))m.set(c.partido,[]);m.get(c.partido).push(c);});return [...m].map(([nome,dados])=>({nome,dados}));
+}
+function graficoCustoCargo() {
+ const cargos=[...new Set(dadosFiltrados.map(c=>c.cargo))];
+ barraHorizontal("graficoCustoCargo",cargos.map(nome=>({nome,valor:custoVoto(estatisticas(dadosFiltrados.filter(c=>c.cargo===nome)),"contratadas")??0})),"R$/voto");
+ $("subCustoCargo").textContent="Candidaturas vinculadas; cargos sem votos mostram barra zero, sem custo calculável.";
+}
+function graficoRelacao() {
+ const cargos=[...new Set(dadosFiltrados.map(c=>c.cargo))];
+ const d=cargos.map(nome=>({nome,lista:dadosFiltrados.filter(c=>c.cargo===nome)}));
+ Plotly.react("graficoRelacao",["receitas_total","despesas_contratadas","despesas_pagas"].map((k,i)=>({
+ type:"bar",name:INDICADORES[k],x:d.map(x=>x.nome),y:d.map(x=>dinheiro(soma(x.lista,k))),
+ marker:{color:["#087e8b","#8056b8","#bf7027"][i]}})),
+ {...LAYOUT_BASE,height:440,barmode:"group",margin:{l:90,r:25,t:30,b:120},xaxis:{automargin:true},yaxis:{title:"R$",automargin:true}},CONFIG);
+ $("subRelacao").textContent="Valores declarados, sem somar despesas contratadas às pagas.";
+}
+function graficosExtraPartidos() {
+ const grupos=grupoPartidos(dadosFiltrados);
+ barraHorizontal("graficoCustoPartidos",grupos.map(g=>({nome:g.nome,valor:custoVoto(estatisticas(g.dados),"contratadas")??0})),"R$/voto");
+ barraHorizontal("graficoVotosPartidos",grupos.map(g=>({nome:g.nome,valor:estatisticas(g.dados).votos})),"Votos");
+ $("tituloPartidosCusto").textContent="Custo contratado por voto — "+textoContexto();
+ $("tituloPartidosVotos").textContent="Votos vinculados por partido — "+textoContexto();
+}
+function agregacaoCategoria(tipo) {
+ const ids=new Set(dadosFiltrados.map(c=>c.sq_candidato));
+ const mapa=new Map();
+ for(const r of (detalhamento.classificacoes[tipo]||[])){
+ if(!ids.has(r.sq_candidato))continue;
+ mapa.set(r.categoria,(mapa.get(r.categoria)||0)+r.valor_centavos);
+ }
+ return [...mapa].map(([nome,valor])=>({nome,valor:valor/100}));
+}
+function graficosDetalhamento() {
+ const r=$("tipoReceita").value;
+ barraHorizontal("graficoOrigem",agregacaoCategoria(r),"R$");
+ barraHorizontal("graficoDespesas",agregacaoCategoria("categorias_despesas"),"R$");
+ $("tituloDetalhamento").textContent="Origem e aplicação — "+textoContexto();
+ $("tituloOrigem").textContent=$("tipoReceita").selectedOptions[0].text+" — "+textoContexto();
+ $("tituloDespesas").textContent="Despesas contratadas por categoria — "+textoContexto();
+}
+function filtrosComparacao() {
+ const cargo=$("filtroCargo").value,situacao=$("filtroSituacao").value;
+ return candidaturas.filter(c=>(!cargo||c.cargo===cargo)&&(!situacao||(c.situacao_totalizacao||"Não informado")===situacao));
+}
+function configurarComparacao() {
+ const vals=[...new Set(filtrosComparacao().map(c=>c.partido))].sort();
+ for(const id of ["partidoA","partidoB"]){
+ const antes=$(id).value; preencherSelect(id,vals,"Escolha um partido"); if(vals.includes(antes))$(id).value=antes;
+ }
+ if(!$("partidoA").value)$("partidoA").value=vals[0]||"";
+ if(!$("partidoB").value)$("partidoB").value=vals.find(x=>x!==$("partidoA").value)||vals[0]||"";
+}
+function graficoComparacao() {
+ const a=$("partidoA").value,b=$("partidoB").value;
+ const dados=filtrosComparacao(); const la=dados.filter(c=>c.partido===a),lb=dados.filter(c=>c.partido===b);
+ const ea=estatisticas(la),eb=estatisticas(lb);
+ $("contextoComparacao").textContent=[a,b,$("filtroCargo").value||"Todos os cargos",$("filtroSituacao").value||"Todas as situações"].join(" | ");
+ $("tituloComparacao").textContent=a+" × "+b+" — comparação 2026";
+ $("cabPartidoA").textContent=a;$("cabPartidoB").textContent=b;
+ const met=[
+ ["Candidaturas",la.length,lb.length,inteiro],["Votos vinculados",ea.votos,eb.votos,inteiro],
+ ["Receitas totais (R$)",ea.receitasTodos,eb.receitasTodos,reais],
+ ["Despesas contratadas (R$)",ea.contratadasTodos,eb.contratadasTodos,reais],
+ ["Despesas pagas (R$)",ea.pagasTodos,eb.pagasTodos,reais],
+ ["Custo contratado por voto",custoVoto(ea,"contratadas"),custoVoto(eb,"contratadas"),v=>v===null?"Não calculável":reais(Math.round(v*100))],
+ ["Custo pago por voto",custoVoto(ea,"pagas"),custoVoto(eb,"pagas"),v=>v===null?"Não calculável":reais(Math.round(v*100))],
+ ["Receita por voto",custoVoto(ea,"receitas"),custoVoto(eb,"receitas"),v=>v===null?"Não calculável":reais(Math.round(v*100))]
+ ];
+ $("corpoComparacao").innerHTML=met.map(([n,x,y,f])=>"<tr><td>"+escapeHTML(n)+"</td><td>"+f(x)+"</td><td>"+f(y)+"</td></tr>").join("");
+ const cats=["Receitas","Contratadas","Pagas"];
+ Plotly.react("graficoComparacaoFinanceira",[["A",la,"#1555a5"],["B",lb,"#087e8b"]].map(([n,l,color])=>({type:"bar",name:n==="A"?a:b,x:cats,y:["receitas_total","despesas_contratadas","despesas_pagas"].map(k=>dinheiro(soma(l,k))),marker:{color}})),{...LAYOUT_BASE,height:440,barmode:"group",xaxis:{automargin:true},yaxis:{title:"R$"}},CONFIG);
+ Plotly.react("graficoComparacaoEleitoral",[{type:"bar",x:[a,b],y:[ea.votos,eb.votos],marker:{color:["#1555a5","#087e8b"]},hovertemplate:"%{x}: %{y:,} votos<extra></extra>"}],{...LAYOUT_BASE,height:440,xaxis:{automargin:true},yaxis:{title:"Votos vinculados"}},CONFIG);
+}
 function escapeHTML(v) {
   return String(v ?? "")
     .replaceAll("&", "&amp;")
@@ -78,13 +170,14 @@ function contextoFiltro() {
     cargo,
     partido,
     candidato: candidato ? candidato.candidato : "Todas as candidaturas",
+    situacao: $("filtroSituacao").value || "Todas as situações",
     indicador: INDICADORES[$("filtroIndicador").value]
   };
 }
 
 function textoContexto() {
   const c = contextoFiltro();
-  return `${c.cargo} | ${c.partido} | ${c.candidato} | 2026`;
+  return `${c.cargo} | ${c.partido} | ${c.candidato} | ${c.situacao} | 2026`;
 }
 
 function preencherSelect(id, valores, rotulo) {
@@ -102,6 +195,7 @@ function preencherFiltros() {
     "Todos os cargos"
   );
 
+  preencherSelect("filtroSituacao", [...new Set(candidaturas.map(c => c.situacao_totalizacao || "Não informado"))].sort((a,b)=>a.localeCompare(b,"pt-BR")), "Todas as situações");
   atualizarFiltrosDependentes();
 }
 
@@ -158,11 +252,13 @@ function aplicarFiltros() {
   const cargo = $("filtroCargo").value;
   const partido = $("filtroPartido").value;
   const candidato = $("filtroCandidato").value;
+  const situacao = $("filtroSituacao").value;
 
   return candidaturas.filter(c =>
     (!cargo || c.cargo === cargo) &&
     (!partido || c.partido === partido) &&
-    (!candidato || c.sq_candidato === candidato)
+    (!candidato || c.sq_candidato === candidato) &&
+    (!situacao || (c.situacao_totalizacao || "Não informado") === situacao)
   );
 }
 
@@ -224,6 +320,11 @@ function atualizarKPIs() {
 
   $("kpiPagas").textContent =
     reais(soma(dadosFiltrados, "despesas_pagas"));
+  const e = estatisticas(dadosFiltrados);
+  $("kpiVotos").textContent = inteiro(e.votos);
+  $("kpiCustoContrato").textContent = e.votos > 0 ? reais(Math.round(e.contratadas * 100 / e.votos)) : "Não calculável";
+  $("kpiCustoPago").textContent = e.votos > 0 ? reais(Math.round(e.pagas * 100 / e.votos)) : "Não calculável";
+  $("kpiRecVoto").textContent = e.votos > 0 ? reais(Math.round(e.receitas * 100 / e.votos)) : "Não calculável";
 }
 
 const LAYOUT_BASE = {
@@ -446,11 +547,19 @@ function renderizarAba() {
     atualizarKPIs();
     graficoComposicao();
     graficoVotos();
+    graficoCustoCargo();
+    graficoRelacao();
   } else if (abaAtual === "partidos") {
     graficoPartidos();
+    graficosExtraPartidos();
   } else if (abaAtual === "candidatos") {
     graficoCandidatos();
     atualizarTabela();
+  } else if (abaAtual === "comparacao") {
+    configurarComparacao();
+    graficoComparacao();
+  } else if (abaAtual === "detalhamento") {
+    graficosDetalhamento();
   }
 }
 
@@ -490,6 +599,8 @@ function configurarEventos() {
     atualizarPainel();
   });
 
+  $("filtroSituacao").addEventListener("change", atualizarPainel);
+
   $("filtroCandidato").addEventListener(
     "change", atualizarPainel
   );
@@ -505,6 +616,7 @@ function configurarEventos() {
     atualizarFiltrosDependentes();
     $("filtroCandidato").value = "";
     $("filtroIndicador").value = "despesas_pagas";
+    $("filtroSituacao").value = "";
     $("buscaTabela").value = "";
     atualizarPainel();
   });
@@ -531,11 +643,16 @@ function configurarEventos() {
   });
 
   $("exportarCSV").addEventListener("click", exportarCSV);
+  $("tipoReceita").addEventListener("change",()=>{if(abaAtual==="detalhamento")graficosDetalhamento();});
+  $("partidoA").addEventListener("change",()=>{if(abaAtual==="comparacao")graficoComparacao();});
+  $("partidoB").addEventListener("change",()=>{if(abaAtual==="comparacao")graficoComparacao();});
 
   window.addEventListener("resize", () => {
     const alvo = {
-      geral: ["graficoComposicao", "graficoVotos"],
-      partidos: ["graficoPartidos"],
+      geral: ["graficoComposicao", "graficoVotos","graficoCustoCargo","graficoRelacao"],
+      partidos: ["graficoPartidos","graficoCustoPartidos","graficoVotosPartidos"],
+      comparacao:["graficoComparacaoFinanceira","graficoComparacaoEleitoral"],
+      detalhamento:["graficoOrigem","graficoDespesas"],
       candidatos: ["graficoCandidatos"]
     };
 
@@ -552,11 +669,12 @@ async function iniciar() {
       throw new Error("Plotly não foi carregado.");
     }
 
-    [candidaturas, resumoGeral, metadados] =
+    [candidaturas, resumoGeral, metadados, detalhamento] =
       await Promise.all([
         buscarJSON("dados/candidaturas.json"),
         buscarJSON("dados/resumo.json"),
-        buscarJSON("dados/metadados.json")
+        buscarJSON("dados/metadados.json"),
+        buscarJSON("dados/detalhamento_financeiro.json")
       ]);
 
     if (candidaturas.length !== 998) {
@@ -582,6 +700,10 @@ async function iniciar() {
       }
     }
 
+    if(detalhamento.universo_candidaturas!==998)throw Error("Detalhamento incompatível");
+    for(const [tipo,esperado] of Object.entries({origem_receitas:31942926860,fonte_receitas:31942926860,natureza_receitas:31942926860,categorias_despesas:20336438026})){
+      if((detalhamento.classificacoes[tipo]||[]).reduce((s,r)=>s+r.valor_centavos,0)!==esperado)throw Error("Total do detalhamento não confere: "+tipo);
+    }
     preencherFiltros();
     configurarEventos();
     atualizarPainel();
