@@ -1,0 +1,424 @@
+{
+  "universo": {
+    "uf": "RS",
+    "ano": 2026,
+    "candidaturas": 998,
+    "vinculos_validados": 966,
+    "vinculos_pendentes": 32,
+    "votos_vinculados": 29179673
+  },
+  "financeiro_centavos": {
+    "receitas_total": 31942926860,
+    "receitas_financeiras": 30808936561,
+    "receitas_estimaveis": 1133990299,
+    "despesas_contratadas": 20336438026,
+    "despesas_pagas": 16429359864
+  },
+  "por_cargo": [
+    {
+      "grupo": "DEPUTADO ESTADUAL",
+      "candidaturas": 531,
+      "vinculos_validados": 517,
+      "votos_vinculados": 5755772,
+      "financeiro_centavos": {
+        "receitas_total": 10710325408,
+        "receitas_financeiras": 10126199563,
+        "receitas_estimaveis": 584125845,
+        "despesas_contratadas": 6826275892,
+        "despesas_pagas": 5681847919
+      }
+    },
+    {
+      "grupo": "DEPUTADO FEDERAL",
+      "candidaturas": 447,
+      "vinculos_validados": 429,
+      "votos_vinculados": 5902813,
+      "financeiro_centavos": {
+        "receitas_total": 15226277258,
+        "receitas_financeiras": 14759516439,
+        "receitas_estimaveis": 466760819,
+        "despesas_contratadas": 9326679442,
+        "despesas_pagas": 7314804105
+      }
+    },
+    {
+      "grupo": "GOVERNADOR",
+      "candidaturas": 7,
+      "vinculos_validados": 7,
+      "votos_vinculados": 6055306,
+      "financeiro_centavos": {
+        "receitas_total": 3424079631,
+        "receitas_financeiras": 3392718300,
+        "receitas_estimaveis": 31361331,
+        "despesas_contratadas": 2537356511,
+        "despesas_pagas": 2204643778
+      }
+    },
+    {
+      "grupo": "SENADOR",
+      "candidaturas": 13,
+      "vinculos_validados": 13,
+      "votos_vinculados": 11465782,
+      "financeiro_centavos": {
+        "receitas_total": 2582244563,
+        "receitas_financeiras": 2530502259,
+        "receitas_estimaveis": 51742304,
+        "despesas_contratadas": 1646126181,
+        "despesas_pagas": 1228064062
+      }
+    }
+  ],
+  "por_partido": [
+    {
+      "grupo": "AGIR",
+      "candidaturas": 9,
+      "vinculos_validados": 9,
+      "votos_vinculados": 0,
+      "financeiro_centavos": {
+        "receitas_total": 890940,
+        "receitas_financeiras": 600000,
+        "receitas_estimaveis": 290940,
+        "despesas_contratadas": 535290,
+        "despesas_pagas": 535290
+      }
+    },
+    {
+      "grupo": "AVANTE",
+      "candidaturas": 23,
+      "vinculos_validados": 13,
+      "votos_vinculados": 24483,
+      "financeiro_centavos": {
+        "receitas_total": 134670000,
+        "receitas_financeiras": 134530000,
+        "receitas_estimaveis": 140000,
+        "despesas_contratadas": 29491835,
+        "despesas_pagas": 27346125
+      }
+    },
+    {
+      "grupo": "CIDADANIA",
+      "candidaturas": 10,
+      "vinculos_validados": 7,
+      "votos_vinculados": 21916,
+      "financeiro_centavos": {
+        "receitas_total": 46541095,
+        "receitas_financeiras": 34815300,
+        "receitas_estimaveis": 11725795,
+        "despesas_contratadas": 14620149,
+        "despesas_pagas": 13754149
+      }
+    },
+    {
+      "grupo": "DC",
+      "candidaturas": 23,
+      "vinculos_validados": 22,
+      "votos_vinculados": 4124,
+      "financeiro_centavos": {
+        "receitas_total": 2050000,
+        "receitas_financeiras": 2050000,
+        "receitas_estimaveis": 0,
+        "despesas_contratadas": 370000,
+        "despesas_pagas": 145000
+      }
+    },
+    {
+      "grupo": "DEMOCRATA",
+      "candidaturas": 25,
+      "vinculos_validados": 20,
+      "votos_vinculados": 0,
+      "financeiro_centavos": {
+        "receitas_total": 450000,
+        "receitas_financeiras": 450000,
+        "receitas_estimaveis": 0,
+        "despesas_contratadas": 571388,
+        "despesas_pagas": 571388
+      }
+    },
+    {
+      "grupo": "MDB",
+      "candidaturas": 85,
+      "vinculos_validados": 84,
+      "votos_vinculados": 1958573,
+      "financeiro_centavos": {
+        "receitas_total": 3032866559,
+        "receitas_financeiras": 2960532678,
+        "receitas_estimaveis": 72333881,
+        "despesas_contratadas": 1810283916,
+        "despesas_pagas": 1286802814
+      }
+    },
+    {
+      "grupo": "MISSÃO",
+      "candidaturas": 22,
+      "vinculos_validados": 22,
+      "votos_vinculados": 101822,
+      "financeiro_centavos": {
+        "receitas_total": 14509643,
+        "receitas_financeiras": 14459309,
+        "receitas_estimaveis": 50334,
+        "despesas_contratadas": 7095946,
+        "despesas_pagas": 7095946
+      }
+    },
+    {
+      "grupo": "NOVO",
+      "candidaturas": 71,
+      "vinculos_validados": 68,
+      "votos_vinculados": 3867031,
+      "financeiro_centavos": {
+        "receitas_total": 1646370831,
+        "receitas_financeiras": 1506537849,
+        "receitas_estimaveis": 139832982,
+        "despesas_contratadas": 940570022,
+        "despesas_pagas": 681475198
+      }
+    },
+    {
+      "grupo": "PCDOB",
+      "candidaturas": 8,
+      "vinculos_validados": 8,
+      "votos_vinculados": 185172,
+      "financeiro_centavos": {
+        "receitas_total": 400639858,
+        "receitas_financeiras": 386101608,
+        "receitas_estimaveis": 14538250,
+        "despesas_contratadas": 232695357,
+        "despesas_pagas": 190434313
+      }
+    },
+    {
+      "grupo": "PCO",
+      "candidaturas": 2,
+      "vinculos_validados": 2,
+      "votos_vinculados": 0,
+      "financeiro_centavos": {
+        "receitas_total": 0,
+        "receitas_financeiras": 0,
+        "receitas_estimaveis": 0,
+        "despesas_contratadas": 0,
+        "despesas_pagas": 0
+      }
+    },
+    {
+      "grupo": "PDT",
+      "candidaturas": 79,
+      "vinculos_validados": 79,
+      "votos_vinculados": 2567080,
+      "financeiro_centavos": {
+        "receitas_total": 2980810534,
+        "receitas_financeiras": 2970446534,
+        "receitas_estimaveis": 10364000,
+        "despesas_contratadas": 1627934379,
+        "despesas_pagas": 1393938029
+      }
+    },
+    {
+      "grupo": "PL",
+      "candidaturas": 89,
+      "vinculos_validados": 89,
+      "votos_vinculados": 9359865,
+      "financeiro_centavos": {
+        "receitas_total": 6118291106,
+        "receitas_financeiras": 6079344879,
+        "receitas_estimaveis": 38946227,
+        "despesas_contratadas": 4294808763,
+        "despesas_pagas": 3635084858
+      }
+    },
+    {
+      "grupo": "PODE",
+      "candidaturas": 78,
+      "vinculos_validados": 78,
+      "votos_vinculados": 709816,
+      "financeiro_centavos": {
+        "receitas_total": 1657454816,
+        "receitas_financeiras": 1375895176,
+        "receitas_estimaveis": 281559640,
+        "despesas_contratadas": 1046251341,
+        "despesas_pagas": 958635844
+      }
+    },
+    {
+      "grupo": "PP",
+      "candidaturas": 42,
+      "vinculos_validados": 42,
+      "votos_vinculados": 1391587,
+      "financeiro_centavos": {
+        "receitas_total": 3593874200,
+        "receitas_financeiras": 3542299706,
+        "receitas_estimaveis": 51574494,
+        "despesas_contratadas": 2098622470,
+        "despesas_pagas": 1685431621
+      }
+    },
+    {
+      "grupo": "PRD",
+      "candidaturas": 5,
+      "vinculos_validados": 5,
+      "votos_vinculados": 1455,
+      "financeiro_centavos": {
+        "receitas_total": 33000000,
+        "receitas_financeiras": 33000000,
+        "receitas_estimaveis": 0,
+        "despesas_contratadas": 7619450,
+        "despesas_pagas": 7419450
+      }
+    },
+    {
+      "grupo": "PSB",
+      "candidaturas": 46,
+      "vinculos_validados": 46,
+      "votos_vinculados": 116374,
+      "financeiro_centavos": {
+        "receitas_total": 531310185,
+        "receitas_financeiras": 504344533,
+        "receitas_estimaveis": 26965652,
+        "despesas_contratadas": 354584373,
+        "despesas_pagas": 285426682
+      }
+    },
+    {
+      "grupo": "PSD",
+      "candidaturas": 70,
+      "vinculos_validados": 67,
+      "votos_vinculados": 1187305,
+      "financeiro_centavos": {
+        "receitas_total": 3065020202,
+        "receitas_financeiras": 2991916241,
+        "receitas_estimaveis": 73103961,
+        "despesas_contratadas": 1786678488,
+        "despesas_pagas": 1424735444
+      }
+    },
+    {
+      "grupo": "PSDB",
+      "candidaturas": 69,
+      "vinculos_validados": 66,
+      "votos_vinculados": 367543,
+      "financeiro_centavos": {
+        "receitas_total": 893136317,
+        "receitas_financeiras": 775577022,
+        "receitas_estimaveis": 117559295,
+        "despesas_contratadas": 512323280,
+        "despesas_pagas": 300209626
+      }
+    },
+    {
+      "grupo": "PSOL",
+      "candidaturas": 45,
+      "vinculos_validados": 44,
+      "votos_vinculados": 2615451,
+      "financeiro_centavos": {
+        "receitas_total": 1552138788,
+        "receitas_financeiras": 1464017796,
+        "receitas_estimaveis": 88120992,
+        "despesas_contratadas": 1027943863,
+        "despesas_pagas": 831443530
+      }
+    },
+    {
+      "grupo": "PSTU",
+      "candidaturas": 7,
+      "vinculos_validados": 7,
+      "votos_vinculados": 35561,
+      "financeiro_centavos": {
+        "receitas_total": 15426400,
+        "receitas_financeiras": 15426400,
+        "receitas_estimaveis": 0,
+        "despesas_contratadas": 11458550,
+        "despesas_pagas": 2345550
+      }
+    },
+    {
+      "grupo": "PT",
+      "candidaturas": 61,
+      "vinculos_validados": 61,
+      "votos_vinculados": 3570389,
+      "financeiro_centavos": {
+        "receitas_total": 3583788684,
+        "receitas_financeiras": 3476029672,
+        "receitas_estimaveis": 107759012,
+        "despesas_contratadas": 2744979813,
+        "despesas_pagas": 2120123414
+      }
+    },
+    {
+      "grupo": "PV",
+      "candidaturas": 2,
+      "vinculos_validados": 2,
+      "votos_vinculados": 16704,
+      "financeiro_centavos": {
+        "receitas_total": 32998100,
+        "receitas_financeiras": 32198100,
+        "receitas_estimaveis": 800000,
+        "despesas_contratadas": 29191266,
+        "despesas_pagas": 28957066
+      }
+    },
+    {
+      "grupo": "REDE",
+      "candidaturas": 4,
+      "vinculos_validados": 4,
+      "votos_vinculados": 4905,
+      "financeiro_centavos": {
+        "receitas_total": 28311050,
+        "receitas_financeiras": 26871050,
+        "receitas_estimaveis": 1440000,
+        "despesas_contratadas": 5557900,
+        "despesas_pagas": 4561900
+      }
+    },
+    {
+      "grupo": "REPUBLICANOS",
+      "candidaturas": 87,
+      "vinculos_validados": 86,
+      "votos_vinculados": 820023,
+      "financeiro_centavos": {
+        "receitas_total": 1980936915,
+        "receitas_financeiras": 1910522024,
+        "receitas_estimaveis": 70414891,
+        "despesas_contratadas": 1249943060,
+        "despesas_pagas": 1126276852
+      }
+    },
+    {
+      "grupo": "SOLIDARIEDADE",
+      "candidaturas": 12,
+      "vinculos_validados": 11,
+      "votos_vinculados": 3686,
+      "financeiro_centavos": {
+        "receitas_total": 35047500,
+        "receitas_financeiras": 33169500,
+        "receitas_estimaveis": 1878000,
+        "despesas_contratadas": 21458527,
+        "despesas_pagas": 7899385
+      }
+    },
+    {
+      "grupo": "UNIÃO",
+      "candidaturas": 16,
+      "vinculos_validados": 16,
+      "votos_vinculados": 222080,
+      "financeiro_centavos": {
+        "receitas_total": 549900183,
+        "receitas_financeiras": 527923334,
+        "receitas_estimaveis": 21976849,
+        "despesas_contratadas": 472462424,
+        "despesas_pagas": 403944214
+      }
+    },
+    {
+      "grupo": "UP",
+      "candidaturas": 8,
+      "vinculos_validados": 8,
+      "votos_vinculados": 26728,
+      "financeiro_centavos": {
+        "receitas_total": 12492954,
+        "receitas_financeiras": 9877850,
+        "receitas_estimaveis": 2615104,
+        "despesas_contratadas": 8386176,
+        "despesas_pagas": 4766176
+      }
+    }
+  ]
+}
