@@ -1,0 +1,365 @@
+/* ===========================================================
+   FINANÇAS ELEITORAIS RS 2026 — BLOCO 08D
+   =========================================================== */
+
+:root {
+  --fundo: #f2f5fa;
+  --branco: #ffffff;
+  --texto: #17263d;
+  --cinza: #63738b;
+  --linha: #dae3ee;
+  --azul: #1555a5;
+  --azul-escuro: #12325e;
+  --verde: #087e8b;
+  --sombra: 0 5px 19px rgba(15, 46, 91, .06);
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  background: var(--fundo);
+  color: var(--texto);
+  font: 14px Arial, Helvetica, sans-serif;
+}
+
+.container {
+  width: min(96%, 1740px);
+  margin: 0 auto;
+}
+
+.topo {
+  padding: 34px 0 38px;
+  color: #fff;
+  background: linear-gradient(112deg, #102e56, #1658ad);
+}
+
+.sobrelinha {
+  margin: 0;
+  font-size: 11px;
+  font-weight: bold;
+  letter-spacing: 1.7px;
+  opacity: .9;
+}
+
+h1 {
+  margin: 13px 0;
+  font-size: clamp(28px, 3vw, 43px);
+}
+
+h1 span {
+  font-size: .68em;
+  font-weight: normal;
+}
+
+.descricao {
+  margin: 0;
+  color: #e0ecfb;
+  line-height: 1.6;
+}
+
+main { padding: 23px 0 36px; }
+
+.card, .kpi {
+  border: 1px solid var(--linha);
+  background: var(--branco);
+  border-radius: 12px;
+  box-shadow: var(--sombra);
+  min-width: 0;
+}
+
+.filtros {
+  padding: 20px;
+  margin-bottom: 17px;
+}
+
+.titulo-linha {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+}
+
+h2, h3 { color: var(--azul-escuro); }
+
+h2 { font-size: 19px; margin: 0; }
+h3 { font-size: 16px; margin: 0 0 9px; }
+
+.grid-filtros {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 15px;
+  margin-top: 20px;
+}
+
+label {
+  display: block;
+  font-size: 12px;
+  font-weight: bold;
+  color: var(--cinza);
+}
+
+select, input[type="search"] {
+  display: block;
+  width: 100%;
+  min-height: 42px;
+  margin-top: 8px;
+  border: 1px solid #c7d4e4;
+  border-radius: 7px;
+  background: #fff;
+  color: var(--texto);
+  font: 13px Arial, sans-serif;
+  padding: 10px;
+}
+
+button {
+  cursor: pointer;
+  font: bold 12px Arial, sans-serif;
+}
+
+.btn {
+  padding: 11px 15px;
+  border: 1px solid var(--azul);
+  background: var(--azul);
+  color: #fff;
+  border-radius: 7px;
+}
+
+.btn.discreto {
+  background: #fff;
+  color: var(--azul-escuro);
+  border-color: #c9d4e3;
+}
+
+button:hover:not(:disabled) { filter: brightness(.96); }
+button:disabled { opacity: .4; cursor: not-allowed; }
+
+.contexto {
+  margin-top: 16px;
+  padding: 11px 13px;
+  border-radius: 7px;
+  color: #355477;
+  background: #edf4fb;
+  font-size: 12px;
+  line-height: 1.7;
+}
+
+.abas {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 19px 0;
+  padding-bottom: 2px;
+}
+
+.aba {
+  background: #e8eef6;
+  border: 1px solid #d4deea;
+  color: #345476;
+  padding: 13px 20px;
+  border-radius: 8px;
+  font-size: 13px;
+  transition: background .15s;
+}
+
+.aba.ativa {
+  background: var(--azul);
+  color: #fff;
+  border-color: var(--azul);
+}
+
+.conteudo-aba { display: none; }
+.conteudo-aba.ativa { display: block; }
+
+.cabecalho-secao {
+  margin: 0 0 19px;
+}
+
+.cabecalho-secao h2 {
+  font-size: 23px;
+  line-height: 1.35;
+}
+
+.cabecalho-secao p {
+  margin: 8px 0 0;
+  font-size: 13px;
+  color: var(--cinza);
+  line-height: 1.6;
+}
+
+.kpis {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 16px;
+  margin-bottom: 18px;
+}
+
+.kpi {
+  padding: 22px;
+  border-top: 4px solid var(--azul);
+}
+
+.kpi:nth-child(2) { border-top-color: #087f8c; }
+.kpi:nth-child(3) { border-top-color: #8056b8; }
+.kpi:nth-child(4) { border-top-color: #bf7027; }
+
+.kpi span, .kpi small {
+  display: block;
+  color: var(--cinza);
+}
+
+.kpi strong {
+  display: block;
+  margin: 14px 0;
+  font-size: clamp(19px, 1.8vw, 29px);
+  overflow-wrap: anywhere;
+  letter-spacing: -.4px;
+}
+
+.kpi small { font-size: 11px; }
+
+.grade-2 {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: 18px;
+}
+
+.grafico-card {
+  padding: 20px;
+}
+
+.subgrafico {
+  margin: 0 0 12px;
+  font-size: 12px;
+  color: var(--cinza);
+  line-height: 1.6;
+}
+
+.grafico {
+  width: 100%;
+  min-height: 440px;
+}
+
+.grafico-grande { min-height: 560px; }
+
+.rolagem-grafico {
+  max-height: 740px;
+  overflow-y: auto;
+  overflow-x: hidden;
+  border: 1px solid #e8edf4;
+  border-radius: 8px;
+}
+
+.candidatos-rolagem { max-height: 680px; }
+
+.tabela-card {
+  padding: 20px;
+  margin-top: 18px;
+}
+
+.quebravel { flex-wrap: wrap; }
+
+.acoes {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+.acoes input {
+  width: min(340px, 44vw);
+  margin: 0;
+}
+
+.tabela-scroll {
+  margin-top: 19px;
+  width: 100%;
+  overflow-x: auto;
+}
+
+table {
+  border-collapse: collapse;
+  width: 100%;
+  font-size: 12px;
+  white-space: nowrap;
+}
+
+thead { background: #eaf0f8; }
+
+th, td {
+  border-bottom: 1px solid var(--linha);
+  padding: 12px 13px;
+  text-align: left;
+}
+
+th { color: #355477; }
+th:nth-child(n+4), td:nth-child(n+4) { text-align: right; }
+
+tbody tr:hover { background: #f4f8fe; }
+td:first-child { font-weight: bold; }
+
+.paginacao {
+  margin-top: 17px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  color: var(--cinza);
+  font-size: 12px;
+}
+
+.paginacao div { display: flex; gap: 8px; }
+
+.aviso, .texto-metodo { padding: 25px; }
+
+.aviso p, .texto-metodo p {
+  color: #4e617b;
+  line-height: 1.85;
+}
+
+.texto-metodo h3 { margin-top: 20px; }
+.texto-metodo h3:first-child { margin-top: 0; }
+
+.rodape {
+  background: #102e56;
+  padding: 24px 0;
+  color: #e9f0fa;
+}
+
+.rodape .container {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  font-size: 12px;
+}
+
+.erro {
+  position: fixed;
+  bottom: 20px;
+  left: 20px;
+  right: 20px;
+  max-width: 900px;
+  margin: auto;
+  background: #fff0ed;
+  color: #8c302b;
+  border: 1px solid #d99b94;
+  border-radius: 8px;
+  padding: 18px;
+  z-index: 999;
+}
+
+[hidden] { display: none !important; }
+
+@media (max-width: 1100px) {
+  .grade-2 { grid-template-columns: 1fr; }
+  .grid-filtros { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .kpis { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+
+@media (max-width: 620px) {
+  .container { width: 94%; }
+  .grid-filtros, .kpis { grid-template-columns: 1fr; }
+  .acoes { width: 100%; flex-direction: column; }
+  .acoes input, .acoes button { width: 100%; }
+  .rodape .container { flex-direction: column; }
+  .aba { flex: 1 1 auto; }
+}

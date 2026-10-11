@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Finanças Eleitorais — RS 2026</title>
+
+  <link rel="stylesheet" href="styles.css">
+
+  <script defer src="https://cdn.plot.ly/plotly-2.35.2.min.js"></script>
+  <script defer src="app.js"></script>
+</head>
+
+<body>
+<header class="topo">
+  <div class="container">
+    <p class="sobrelinha">PAINEL INTERATIVO • RIO GRANDE DO SUL</p>
+    <h1>Finanças Eleitorais <span>RS — 2026</span></h1>
+    <p class="descricao">
+      Receitas, despesas e votação por candidatura, partido e cargo.
+    </p>
+  </div>
+</header>
+
+<main class="container">
+
+  <section class="card filtros">
+    <div class="titulo-linha">
+      <h2>Filtros da análise</h2>
+      <button id="limparFiltros" class="btn discreto" type="button">
+        Limpar filtros
+      </button>
+    </div>
+
+    <div class="grid-filtros">
+      <label>
+        Cargo
+        <select id="filtroCargo">
+          <option value="">Todos os cargos</option>
+        </select>
+      </label>
+
+      <label>
+        Partido
+        <select id="filtroPartido">
+          <option value="">Todos os partidos</option>
+        </select>
+      </label>
+
+      <label>
+        Candidatura
+        <select id="filtroCandidato">
+          <option value="">Todas as candidaturas</option>
+        </select>
+      </label>
+
+      <label>
+        Indicador financeiro
+        <select id="filtroIndicador">
+          <option value="receitas_total">Receitas totais</option>
+          <option value="receitas_financeiras">Receitas financeiras</option>
+          <option value="receitas_estimaveis">Receitas estimáveis</option>
+          <option value="despesas_contratadas">Despesas contratadas</option>
+          <option value="despesas_pagas" selected>Despesas pagas</option>
+        </select>
+      </label>
+    </div>
+
+    <div class="contexto" id="contextoGeral"></div>
+  </section>
+
+  <nav class="abas" aria-label="Navegação do painel">
+    <button class="aba ativa" data-aba="geral" type="button">
+      Visão geral
+    </button>
+    <button class="aba" data-aba="partidos" type="button">
+      Partidos
+    </button>
+    <button class="aba" data-aba="candidatos" type="button">
+      Candidatos
+    </button>
+    <button class="aba" data-aba="comparacao" type="button">
+      Comparar partidos
+    </button>
+    <button class="aba" data-aba="metodologia" type="button">
+      Metodologia
+    </button>
+  </nav>
+
+  <!-- =================================================== -->
+  <!-- ABA 1 — VISÃO GERAL -->
+  <!-- =================================================== -->
+
+  <section id="aba-geral" class="conteudo-aba ativa">
+    <div class="cabecalho-secao">
+      <h2 id="tituloGeral">Visão geral</h2>
+      <p id="subtituloGeral"></p>
+    </div>
+
+    <div class="kpis">
+      <article class="kpi">
+        <span>Candidaturas</span>
+        <strong id="kpiCandidaturas">—</strong>
+        <small id="kpiVinculos">—</small>
+      </article>
+
+      <article class="kpi">
+        <span>Receitas totais</span>
+        <strong id="kpiReceitas">—</strong>
+        <small>Valores declarados</small>
+      </article>
+
+      <article class="kpi">
+        <span>Despesas contratadas</span>
+        <strong id="kpiContratadas">—</strong>
+        <small>Valores declarados</small>
+      </article>
+
+      <article class="kpi">
+        <span>Despesas pagas</span>
+        <strong id="kpiPagas">—</strong>
+        <small>Pagamentos registrados</small>
+      </article>
+    </div>
+
+    <div class="grade-2">
+      <article class="card grafico-card">
+        <h3 id="tituloComposicao">Composição financeira</h3>
+        <p class="subgrafico" id="subtituloComposicao"></p>
+        <div id="graficoComposicao" class="grafico"></div>
+      </article>
+
+      <article class="card grafico-card">
+        <h3 id="tituloVotos">Financiamento e votação</h3>
+        <p class="subgrafico" id="subtituloVotos"></p>
+        <div id="graficoVotos" class="grafico"></div>
+      </article>
+    </div>
+  </section>
+
+  <!-- =================================================== -->
+  <!-- ABA 2 — PARTIDOS -->
+  <!-- =================================================== -->
+
+  <section id="aba-partidos" class="conteudo-aba">
+    <div class="cabecalho-secao">
+      <h2 id="tituloPartidos">Distribuição por partido</h2>
+      <p id="subtituloPartidos"></p>
+    </div>
+
+    <article class="card grafico-card">
+      <div class="titulo-linha">
+        <div>
+          <h3>Valores financeiros por partido</h3>
+          <p class="subgrafico">
+            Todos os partidos presentes no recorte selecionado.
+          </p>
+        </div>
+      </div>
+
+      <div class="rolagem-grafico">
+        <div id="graficoPartidos" class="grafico grafico-grande"></div>
+      </div>
+    </article>
+  </section>
+
+  <!-- =================================================== -->
+  <!-- ABA 3 — CANDIDATOS -->
+  <!-- =================================================== -->
+
+  <section id="aba-candidatos" class="conteudo-aba">
+    <div class="cabecalho-secao">
+      <h2 id="tituloCandidatos">Candidaturas</h2>
+      <p id="subtituloCandidatos"></p>
+    </div>
+
+    <article class="card grafico-card">
+      <h3>Distribuição do indicador por candidatura</h3>
+      <p class="subgrafico" id="subtituloGraficoCandidatos"></p>
+
+      <div class="rolagem-grafico candidatos-rolagem">
+        <div id="graficoCandidatos" class="grafico"></div>
+      </div>
+    </article>
+
+    <article class="card tabela-card">
+      <div class="titulo-linha quebravel">
+        <div>
+          <h3>Tabela de candidaturas</h3>
+          <p class="subgrafico" id="resumoTabela"></p>
+        </div>
+
+        <div class="acoes">
+          <input id="buscaTabela" type="search"
+            placeholder="Pesquisar candidato ou partido">
+          <button id="exportarCSV" type="button" class="btn">
+            Exportar CSV
+          </button>
+        </div>
+      </div>
+
+      <div class="tabela-scroll">
+        <table>
+          <thead>
+            <tr>
+              <th>Candidato</th>
+              <th>Partido</th>
+              <th>Cargo</th>
+              <th>Votos</th>
+              <th>Receitas</th>
+              <th>Contratadas</th>
+              <th>Pagas</th>
+            </tr>
+          </thead>
+          <tbody id="corpoTabela"></tbody>
+        </table>
+      </div>
+
+      <div class="paginacao">
+        <span id="paginaInfo"></span>
+        <div>
+          <button id="paginaAnterior" class="btn discreto">Anterior</button>
+          <button id="paginaProxima" class="btn discreto">Próxima</button>
+        </div>
+      </div>
+    </article>
+  </section>
+
+  <!-- =================================================== -->
+  <!-- ABA 4 — COMPARAÇÃO -->
+  <!-- =================================================== -->
+
+  <section id="aba-comparacao" class="conteudo-aba">
+    <div class="cabecalho-secao">
+      <h2>Comparação entre partidos</h2>
+      <p>
+        Esta aba receberá os seletores independentes de Partido A
+        e Partido B no BLOCO 08E.
+      </p>
+    </div>
+
+    <article class="card aviso">
+      <h3>Comparação em preparação</h3>
+      <p>
+        A próxima etapa implementará a comparação de receitas,
+        despesas, candidaturas e votos entre dois partidos,
+        respeitando os filtros por cargo.
+      </p>
+      <p>
+        Nenhuma comparação será calculada antes de validar
+        as regras de seleção e os denominadores.
+      </p>
+    </article>
+  </section>
+
+  <!-- =================================================== -->
+  <!-- ABA 5 — METODOLOGIA -->
+  <!-- =================================================== -->
+
+  <section id="aba-metodologia" class="conteudo-aba">
+    <div class="cabecalho-secao">
+      <h2>Metodologia e fontes</h2>
+      <p>Escopo e critérios utilizados na construção do painel.</p>
+    </div>
+
+    <article class="card texto-metodo">
+      <h3>Fonte e universo</h3>
+      <p>
+        Tribunal Superior Eleitoral (TSE), dados de prestação
+        de contas e votação do Rio Grande do Sul, 2026.
+        A base reúne 998 candidaturas a governador, senador,
+        deputado federal e deputado estadual.
+      </p>
+
+      <h3>Correspondência eleitoral</h3>
+      <p>
+        966 candidaturas possuem correspondência eleitoral
+        validada. As outras 32 continuam no universo financeiro,
+        sem votos atribuídos automaticamente.
+        Votação ausente não significa zero voto.
+      </p>
+
+      <h3>Indicadores financeiros</h3>
+      <p>
+        Receitas financeiras, receitas estimáveis, despesas
+        contratadas e despesas pagas são categorias distintas.
+        Despesas contratadas e despesas pagas não devem
+        ser somadas como se fossem gastos adicionais.
+      </p>
+
+      <h3>Limitações</h3>
+      <p>
+        Os totais financeiros reproduzem os lançamentos
+        declarados nas bases utilizadas, inclusive possíveis
+        repetições. Não constituem valores definitivamente
+        auditados quanto à duplicação econômica.
+      </p>
+
+      <p>
+        Os totais de votos vinculados não equivalem,
+        necessariamente, à votação total apurada em cada cargo.
+        As relações entre dinheiro e votos são descritivas
+        e não demonstram causalidade.
+      </p>
+    </article>
+  </section>
+
+</main>
+
+<footer class="rodape">
+  <div class="container">
+    <span>Finanças Eleitorais RS 2026</span>
+    <span>Fonte: TSE • Valores declarados</span>
+  </div>
+</footer>
+
+<div id="mensagemErro" class="erro" hidden role="alert"></div>
+
+</body>
+</html>
