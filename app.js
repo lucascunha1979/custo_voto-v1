@@ -490,7 +490,10 @@ function atualizarTabela() {
         <td>${escapeHTML(c.candidato)}</td>
         <td>${escapeHTML(c.partido)}</td>
         <td>${escapeHTML(c.cargo)}</td>
+        <td>${escapeHTML(c.situacao_totalizacao || "Não informado")}</td>
         <td>${c.votos === null ? "Sem vínculo" : inteiro(c.votos)}</td>
+        <td>${c.vinculo_validado && c.votos > 0 ? reais(Math.round((c.financeiro_centavos.despesas_contratadas ?? 0)/c.votos)) : "Não calculável"}</td>
+        <td>${c.vinculo_validado && c.votos > 0 ? reais(Math.round((c.financeiro_centavos.despesas_pagas ?? 0)/c.votos)) : "Não calculável"}</td>
         <td>${reais(c.financeiro_centavos.receitas_total)}</td>
         <td>${reais(c.financeiro_centavos.despesas_contratadas)}</td>
         <td>${reais(c.financeiro_centavos.despesas_pagas)}</td>
@@ -505,6 +508,24 @@ function atualizarTabela() {
 
   $("paginaAnterior").disabled = paginaAtual <= 1;
   $("paginaProxima").disabled = paginaAtual >= totalPaginas;
+}
+
+
+function exportarXLSX() {
+ if(typeof XLSX==="undefined"){alert("Biblioteca XLSX indisponível. Atualize a página e tente novamente.");return;}
+ const rows=obterTabela(); const w=XLSX.utils.book_new();
+ const cab=["Candidato","Partido","Cargo","Situação eleitoral","Votos","Receitas totais (R$)","Despesas contratadas (R$)","Despesas pagas (R$)","Custo contratado/voto (R$)","Custo pago/voto (R$)"];
+ const linhas=rows.map(c=>[c.candidato,c.partido,c.cargo,c.situacao_totalizacao||"",c.vinculo_validado?c.votos:null,
+ (c.financeiro_centavos.receitas_total??0)/100,(c.financeiro_centavos.despesas_contratadas??0)/100,(c.financeiro_centavos.despesas_pagas??0)/100,
+ c.vinculo_validado&&c.votos>0?(c.financeiro_centavos.despesas_contratadas??0)/(100*c.votos):null,
+ c.vinculo_validado&&c.votos>0?(c.financeiro_centavos.despesas_pagas??0)/(100*c.votos):null]);
+ const ws=XLSX.utils.aoa_to_sheet([cab,...linhas]);
+ ws["!cols"]=[{wch:38},{wch:15},{wch:24},{wch:23},{wch:16},...Array.from({length:5},()=>({wch:25}))];
+ for(let i=2;i<=linhas.length+1;i++){const votos=ws["E"+i];if(votos?.v===null)delete ws["E"+i]; else if(votos)votos.z="#,##0";for(const col of "FGHIJ"){let c=ws[col+i];if(c?.t==="n")c.z='"R$" #,##0.00';}}
+ XLSX.utils.book_append_sheet(w,ws,"Candidaturas");
+ const contexto=[["Campo","Filtro"],["Cargo",$("filtroCargo").value||"Todos"],["Partido",$("filtroPartido").value||"Todos"],["Candidatura",$("filtroCandidato").value||"Todas"],["Situação",$("filtroSituacao").value||"Todas"],["Indicador",INDICADORES[$("filtroIndicador").value]],["Registros exportados",rows.length]];
+ XLSX.utils.book_append_sheet(w,XLSX.utils.aoa_to_sheet(contexto),"Filtros e metodologia");
+ XLSX.writeFile(w,"financas_eleitorais_rs2026_filtrado.xlsx");
 }
 
 function exportarCSV() {
@@ -642,7 +663,7 @@ function configurarEventos() {
     atualizarTabela();
   });
 
-  $("exportarCSV").addEventListener("click", exportarCSV);
+  $("exportarCSV").addEventListener("click", exportarXLSX);
   $("tipoReceita").addEventListener("change",()=>{if(abaAtual==="detalhamento")graficosDetalhamento();});
   $("partidoA").addEventListener("change",()=>{if(abaAtual==="comparacao")graficoComparacao();});
   $("partidoB").addEventListener("change",()=>{if(abaAtual==="comparacao")graficoComparacao();});
