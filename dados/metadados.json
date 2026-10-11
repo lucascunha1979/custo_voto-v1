@@ -1,0 +1,33 @@
+{
+  "titulo": "Finanças Eleitorais e Votação — Rio Grande do Sul — 2026",
+  "fonte": "Tribunal Superior Eleitoral (TSE) — dados declarados de prestação de contas e votação por candidatura",
+  "uf": "RS",
+  "ano": 2026,
+  "data_preparacao": "2026-10-11T18:31:37.545042-03:00",
+  "cargos": [
+    "DEPUTADO ESTADUAL",
+    "DEPUTADO FEDERAL",
+    "GOVERNADOR",
+    "SENADOR"
+  ],
+  "indicadores_financeiros": {
+    "receitas_total": "Receitas totais declaradas",
+    "receitas_financeiras": "Receitas financeiras declaradas",
+    "receitas_estimaveis": "Receitas estimáveis declaradas",
+    "despesas_contratadas": "Despesas contratadas declaradas",
+    "despesas_pagas": "Despesas pagas declaradas"
+  },
+  "unidade_monetaria": "centavos de real",
+  "qualidade": {
+    "candidaturas": 998,
+    "vinculos_validados": 966,
+    "vinculos_pendentes": 32
+  },
+  "observacoes_metodologicas": [
+    "Os totais financeiros reproduzem as linhas das bases de prestação de contas utilizadas, incluindo eventuais repetições.",
+    "As despesas contratadas e pagas são indicadores diferentes e não devem ser somadas entre si.",
+    "Candidaturas sem correspondência eleitoral validada possuem votos ausentes (null), não zero.",
+    "Os valores por voto devem ser calculados somente para candidaturas com vínculo eleitoral validado e votação positiva.",
+    "Os totais de votos vinculados não representam necessariamente a votação total apurada em cada cargo."
+  ]
+}
