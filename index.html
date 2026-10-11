@@ -8,6 +8,7 @@
   <link rel="stylesheet" href="styles.css">
 
   <script defer src="https://cdn.plot.ly/plotly-2.35.2.min.js"></script>
+  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
   <script defer src="app.js"></script>
 </head>
 
@@ -203,7 +204,7 @@
           <input id="buscaTabela" type="search"
             placeholder="Pesquisar candidato ou partido">
           <button id="exportarCSV" type="button" class="btn">
-            Exportar CSV
+            Exportar XLSX
           </button>
         </div>
       </div>
@@ -215,7 +216,10 @@
               <th>Candidato</th>
               <th>Partido</th>
               <th>Cargo</th>
+              <th>Situação</th>
               <th>Votos</th>
+              <th>Custo contratado/voto</th>
+              <th>Custo pago/voto</th>
               <th>Receitas</th>
               <th>Contratadas</th>
               <th>Pagas</th>
