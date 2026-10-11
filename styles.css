@@ -363,3 +363,11 @@ td:first-child { font-weight: bold; }
   .rodape .container { flex-direction: column; }
   .aba { flex: 1 1 auto; }
 }
+
+/* BLOCO 08H — melhorias */
+.grid-filtros{grid-template-columns:repeat(5,minmax(0,1fr))}
+.kpis-secundarios{margin-top:18px}
+.graficos-secundarios{margin-top:18px}
+#corpoComparacao td:nth-child(n+2),#cabPartidoA,#cabPartidoB{text-align:right}
+@media(max-width:1100px){.grid-filtros{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:620px){.grid-filtros{grid-template-columns:1fr}}
