@@ -156,6 +156,7 @@
       <h2 id="tituloPartidos">Distribuição por partido</h2>
       <p id="subtituloPartidos"></p>
     </div>
+    <div class="microcards" id="cardsPartidos" aria-live="polite"></div>
 
     <article class="card grafico-card">
       <div class="titulo-linha">
@@ -182,6 +183,7 @@
       <h2 id="tituloCandidatos">Candidaturas</h2>
       <p id="subtituloCandidatos"></p>
     </div>
+    <div class="microcards" id="cardsCandidatos" aria-live="polite"></div>
 
     <article class="card grafico-card">
       <h3>Distribuição do indicador por candidatura</h3>
@@ -244,15 +246,18 @@
 
   <section id="aba-comparacao" class="conteudo-aba">
     <div class="cabecalho-secao"><h2 id="tituloComparacao">Comparar dois partidos</h2><p>Comparação calculada para o cargo e a situação eleitoral selecionados; a seleção de candidatura não se aplica a esta aba.</p></div>
+    <div class="microcards" id="cardsComparacao" aria-live="polite"></div>
     <div class="card filtros"><div class="grid-filtros"><label>Partido A<select id="partidoA"></select></label><label>Partido B<select id="partidoB"></select></label></div><div class="contexto" id="contextoComparacao"></div></div>
     <div class="grade-2"><article class="card grafico-card"><h3>Receitas e despesas — comparação</h3><div id="graficoComparacaoFinanceira" class="grafico"></div></article><article class="card grafico-card"><h3>Candidaturas e votos — comparação</h3><div id="graficoComparacaoEleitoral" class="grafico"></div></article></div>
     <div class="card tabela-card"><h3>Indicadores comparados</h3><div class="tabela-scroll"><table><thead><tr><th>Indicador</th><th id="cabPartidoA">Partido A</th><th id="cabPartidoB">Partido B</th></tr></thead><tbody id="corpoComparacao"></tbody></table></div><p class="subgrafico">Indicadores por voto: razão de somas restrita às candidaturas com votação validada. Sem votos ou votos zero: indicador indisponível.</p></div>
   </section>
 
-<section id="aba-eficiencia" class="conteudo-aba"><div class="cabecalho-secao"><h2 id="tituloEficiencia">Eficiência financeira</h2><p>Recursos por voto e sua distribuição entre candidaturas e partidos; indicadores descritivos, não causais.</p></div><div class="grade-2"><article class="card grafico-card"><h3>Custo contratado por voto — partidos</h3><div id="graficoEficienciaPartidos" class="grafico"></div></article><article class="card grafico-card"><h3>Dispersão: votação × custo por voto</h3><div id="graficoEficienciaDispersao" class="grafico"></div></article></div><div class="grade-2 graficos-secundarios"><article class="card grafico-card"><h3>Receita por voto — partidos</h3><div id="graficoReceitaVoto" class="grafico"></div></article><article class="card grafico-card"><h3>Receita e despesas declaradas — total filtrado</h3><div id="graficoEficienciaTotais" class="grafico"></div></article></div><p class="contexto">Para custos e receitas por voto usamos apenas candidaturas com votos vinculados; sem votos não há indicador calculável. Contratações e pagamentos representam estágios diferentes, não devem ser somados.</p></section>
+<section id="aba-eficiencia" class="conteudo-aba"><div class="cabecalho-secao"><h2 id="tituloEficiencia">Eficiência financeira</h2><p>Recursos por voto e sua distribuição entre candidaturas e partidos; indicadores descritivos, não causais.</p></div>
+    <div class="microcards" id="cardsEficiencia" aria-live="polite"></div><div class="grade-2"><article class="card grafico-card"><h3>Custo contratado por voto — partidos</h3><div id="graficoEficienciaPartidos" class="grafico"></div></article><article class="card grafico-card"><h3>Dispersão: votação × custo por voto</h3><div id="graficoEficienciaDispersao" class="grafico"></div></article></div><div class="grade-2 graficos-secundarios"><article class="card grafico-card"><h3>Receita por voto — partidos</h3><div id="graficoReceitaVoto" class="grafico"></div></article><article class="card grafico-card"><h3>Receita e despesas declaradas — total filtrado</h3><div id="graficoEficienciaTotais" class="grafico"></div></article></div><p class="contexto">Para custos e receitas por voto usamos apenas candidaturas com votos vinculados; sem votos não há indicador calculável. Contratações e pagamentos representam estágios diferentes, não devem ser somados.</p></section>
   <!-- ABA — ORIGEM E APLICAÇÃO -->
   <section id="aba-detalhamento" class="conteudo-aba">
     <div class="cabecalho-secao"><h2 id="tituloDetalhamento">Origem das receitas e categorias de despesas</h2><p>Classificações oficiais agregadas por candidatura. Escolha a dimensão das receitas e observe as despesas contratadas.</p></div>
+    <div class="microcards" id="cardsDetalhamento" aria-live="polite"></div>
     <div class="card filtros"><label>Classificação das receitas<select id="tipoReceita"><option value="origem_receitas">Origem das receitas</option><option value="fonte_receitas">Fonte das receitas</option><option value="natureza_receitas">Natureza das receitas</option></select></label></div>
     <div class="grade-2"><article class="card grafico-card"><h3 id="tituloOrigem">Fontes das receitas</h3><div class="rolagem-grafico"><div id="graficoOrigem" class="grafico"></div></div></article><article class="card grafico-card"><h3 id="tituloDespesas">Categorias de despesas contratadas</h3><div class="rolagem-grafico"><div id="graficoDespesas" class="grafico"></div></div></article></div>
     <p class="contexto">Origem, fonte e natureza classificam as mesmas receitas: não some essas dimensões. Categorias de despesas correspondem a contratações, não a pagamentos.</p>
