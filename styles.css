@@ -363,3 +363,31 @@ td:first-child { font-weight: bold; }
   .rodape .container { flex-direction: column; }
   .aba { flex: 1 1 auto; }
 }
+
+/* BLOCO 08H — melhorias */
+.grid-filtros{grid-template-columns:repeat(5,minmax(0,1fr))}
+.kpis-secundarios{margin-top:18px}
+.graficos-secundarios{margin-top:18px}
+#corpoComparacao td:nth-child(n+2),#cabPartidoA,#cabPartidoB{text-align:right}
+@media(max-width:1100px){.grid-filtros{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:620px){.grid-filtros{grid-template-columns:1fr}}
+
+/* BLOCO 08J — renovação visual */
+:root{--fundo:#f1f4fb;--azul:#465de0;--azul-escuro:#20315f;--sombra:0 6px 25px rgba(25,51,119,.065)}
+.topo{padding:23px 0 27px;background:linear-gradient(110deg,#192b57,#4559d1 78%,#6477ef)}
+h1{font-size:clamp(26px,2.4vw,36px);margin:8px 0}
+main{padding-top:15px}.filtros{padding:15px 19px;margin-bottom:12px}.grid-filtros{gap:10px;margin-top:12px}.contexto{margin-top:11px;padding:9px 12px}
+.abas{margin:12px 0 15px;gap:7px}.aba{padding:11px 15px;background:#fff}.aba.ativa{background:#465de0;border-color:#465de0}
+.cabecalho-secao{margin-bottom:12px}.cabecalho-secao h2{font-size:20px}.kpis{gap:11px;margin-bottom:12px}.kpi{padding:15px}.kpi strong{margin:8px 0;font-size:clamp(18px,1.6vw,24px)}
+.grade-2{gap:12px}.graficos-secundarios{margin-top:12px}.grafico-card{padding:14px 16px}.grafico{min-height:330px}.rolagem-grafico{max-height:480px}.candidatos-rolagem{max-height:520px}
+@media(max-width:1100px){.grid-filtros{grid-template-columns:repeat(3,minmax(0,1fr))}}@media(max-width:620px){.grid-filtros{grid-template-columns:1fr}}
+
+/* BLOCO 08K — cards informativos responsivos */
+.microcards{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px;margin:0 0 14px}
+.microcard{min-width:0;background:linear-gradient(135deg,#fff 73%,#f2f5ff);border:1px solid #dce3f1;border-left:4px solid var(--acento);border-radius:11px;padding:14px 16px;box-shadow:0 5px 18px rgba(29,53,122,.045);transition:transform .16s,box-shadow .16s}
+.microcard:hover{transform:translateY(-2px);box-shadow:0 9px 23px rgba(28,52,122,.1)}
+.micro-label{display:block;font-size:11px;font-weight:700;letter-spacing:.25px;color:#64708e;min-height:28px}
+.microcard strong{display:block;color:#25345d;font-size:clamp(16px,1.5vw,22px);margin:7px 0 9px;overflow-wrap:anywhere;line-height:1.3}
+.microcard small{font-size:11px;color:#697795;line-height:1.45;display:block}
+@media(max-width:740px){.microcards{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:430px){.microcards{grid-template-columns:1fr}}
