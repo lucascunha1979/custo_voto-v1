@@ -127,6 +127,7 @@ function graficoComparacao() {
  $("contextoComparacao").textContent=[a,b,$("filtroCargo").value||"Todos os cargos",$("filtroSituacao").value||"Todas as situações"].join(" | ");
  $("tituloComparacao").textContent=a+" × "+b+" — comparação 2026";
  $("cabPartidoA").textContent=a;$("cabPartidoB").textContent=b;
+ renderizarCards();
  const met=[
  ["Candidaturas",la.length,lb.length,inteiro],["Votos vinculados",ea.votos,eb.votos,inteiro],
  ["Receitas totais (R$)",ea.receitasTodos,eb.receitasTodos,reais],
@@ -587,7 +588,66 @@ function exportarCSV() {
   URL.revokeObjectURL(url);
 }
 
+
+function montarCards(id,cartoes) {
+ const alvo=$(id); if(!alvo)return;
+ alvo.innerHTML=cartoes.map((c,i)=>'<article class="microcard" style="--acento:'+["#4a60df","#13aa84","#f28a50","#9365df","#16a5c9"][i%5]+'"><span class="micro-label">'+escapeHTML(c.titulo)+'</span><strong>'+escapeHTML(c.valor)+'</strong><small>'+escapeHTML(c.nota||"")+'</small></article>').join("");
+}
+function cardResumoFinanceiro(lista){
+ const e=estatisticas(lista);const ligados=lista.filter(c=>c.vinculo_validado&&c.votos!==null);
+ const menorVoto= e.votos>0?reais(Math.round(100*e.contratadas/e.votos)):"Indisponível";
+ return {e,ligados,menorVoto};
+}
+function renderizarCards(){
+ const lista=dadosFiltrados,info=cardResumoFinanceiro(lista), e=info.e;
+ const divseg=(a,b)=>b>0?numeroDecimal(100*a/b)+"%":"Indisponível";
+ if(abaAtual==="partidos"){
+ const grupos=grupoPartidos(lista);
+ montarCards("cardsPartidos",[
+ {titulo:"Partidos no recorte",valor:inteiro(grupos.length),nota:"Com candidaturas selecionadas"},
+ {titulo:"Candidaturas",valor:inteiro(lista.length),nota:"Incluídas no filtro"},
+ {titulo:"Votos vinculados",valor:inteiro(e.votos),nota:info.ligados.length+" candidaturas validadas"},
+ {titulo:"Custo contratado/voto",valor:info.menorVoto,nota:"Somente candidaturas com votos"}
+ ]);}
+ if(abaAtual==="candidatos"){
+ const comVotos=lista.filter(c=>c.vinculo_validado&&c.votos>0);
+ montarCards("cardsCandidatos",[
+ {titulo:"Candidaturas selecionadas",valor:inteiro(lista.length),nota:"Filtro atual"},
+ {titulo:"Com votos positivos",valor:inteiro(comVotos.length),nota:"Cálculo de custos permitido"},
+ {titulo:"Receita total",valor:reais(soma(lista,"receitas_total")),nota:"Valores declarados"},
+ {titulo:"Despesa paga",valor:reais(soma(lista,"despesas_pagas")),nota:"Valores registrados"}
+ ]);}
+ if(abaAtual==="detalhamento"){
+ const cats=(tipo)=>agregacaoCategoria(tipo).filter(c=>c.valor!==0);
+ const gastos=cats("categorias_despesas");
+ montarCards("cardsDetalhamento",[
+ {titulo:"Receitas declaradas",valor:reais(e.receitasTodos),nota:"Todas as candidaturas filtradas"},
+ {titulo:"Despesas contratadas",valor:reais(e.contratadasTodos),nota:"Não equivale a pagamentos"},
+ {titulo:"Categorias com valores",valor:inteiro(gastos.length),nota:"Do total de 39 categorias na base"},
+ {titulo:"Maior categoria",valor:gastos.length?gastos.sort((a,b)=>b.valor-a.valor)[0].nome:"Sem registro",nota:"Segundo as contratações selecionadas"}
+ ]);}
+ if(abaAtual==="eficiencia"){
+ const porVoto=c=>e.votos>0?reais(Math.round(e[c]*100/e.votos)):"Indisponível";
+ montarCards("cardsEficiencia",[
+ {titulo:"Votos vinculados",valor:inteiro(e.votos),nota:"Correspondências eleitorais validadas"},
+ {titulo:"Receita/voto",valor:porVoto("receitas"),nota:"Razão entre totais vinculados"},
+ {titulo:"Custo contratado/voto",valor:porVoto("contratadas"),nota:"Despesas contratadas vinculadas"},
+ {titulo:"Custo pago/voto",valor:porVoto("pagas"),nota:"Pagamentos vinculados"},
+ {titulo:"Pagas / contratadas",valor:divseg(e.pagasTodos,e.contratadasTodos),nota:"Indicador financeiro descritivo"}
+ ]);}
+ if(abaAtual==="comparacao"){
+ const a=$("partidoA").value,b=$("partidoB").value;
+ const base=filtrosComparacao(),A=estatisticas(base.filter(c=>c.partido===a)),B=estatisticas(base.filter(c=>c.partido===b));
+ montarCards("cardsComparacao",[
+ {titulo:"Candidaturas — "+a,valor:inteiro(A.total),nota:"Partido A"},
+ {titulo:"Candidaturas — "+b,valor:inteiro(B.total),nota:"Partido B"},
+ {titulo:"Votos vinculados — "+a,valor:inteiro(A.votos),nota:"Somente votos validados"},
+ {titulo:"Votos vinculados — "+b,valor:inteiro(B.votos),nota:"Somente votos validados"},
+ {titulo:"Custo contratado/voto — "+a,valor:A.votos>0?reais(Math.round(A.contratadas*100/A.votos)):"Indisponível",nota:"Recursos de candidaturas vinculadas"}
+ ]);}
+}
 function renderizarAba() {
+ renderizarCards();
   // Os gráficos são renderizados apenas quando sua aba
   // está visível, evitando problemas de dimensionamento.
   if (abaAtual === "geral") {
