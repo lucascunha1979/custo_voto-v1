@@ -371,3 +371,13 @@ td:first-child { font-weight: bold; }
 #corpoComparacao td:nth-child(n+2),#cabPartidoA,#cabPartidoB{text-align:right}
 @media(max-width:1100px){.grid-filtros{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media(max-width:620px){.grid-filtros{grid-template-columns:1fr}}
+
+/* BLOCO 08J — renovação visual */
+:root{--fundo:#f1f4fb;--azul:#465de0;--azul-escuro:#20315f;--sombra:0 6px 25px rgba(25,51,119,.065)}
+.topo{padding:23px 0 27px;background:linear-gradient(110deg,#192b57,#4559d1 78%,#6477ef)}
+h1{font-size:clamp(26px,2.4vw,36px);margin:8px 0}
+main{padding-top:15px}.filtros{padding:15px 19px;margin-bottom:12px}.grid-filtros{gap:10px;margin-top:12px}.contexto{margin-top:11px;padding:9px 12px}
+.abas{margin:12px 0 15px;gap:7px}.aba{padding:11px 15px;background:#fff}.aba.ativa{background:#465de0;border-color:#465de0}
+.cabecalho-secao{margin-bottom:12px}.cabecalho-secao h2{font-size:20px}.kpis{gap:11px;margin-bottom:12px}.kpi{padding:15px}.kpi strong{margin:8px 0;font-size:clamp(18px,1.6vw,24px)}
+.grade-2{gap:12px}.graficos-secundarios{margin-top:12px}.grafico-card{padding:14px 16px}.grafico{min-height:330px}.rolagem-grafico{max-height:480px}.candidatos-rolagem{max-height:520px}
+@media(max-width:1100px){.grid-filtros{grid-template-columns:repeat(3,minmax(0,1fr))}}@media(max-width:620px){.grid-filtros{grid-template-columns:1fr}}
