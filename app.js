@@ -102,8 +102,8 @@ function agregacaoCategoria(tipo) {
 }
 function graficosDetalhamento() {
  const r=$("tipoReceita").value;
- barraHorizontal("graficoOrigem",agregacaoCategoria(r),"R$");
- barraHorizontal("graficoDespesas",agregacaoCategoria("categorias_despesas"),"R$");
+ rankingColorido("graficoOrigem",agregacaoCategoria(r),"R$");
+ rankingColorido("graficoDespesas",agregacaoCategoria("categorias_despesas"),"R$");
  $("tituloDetalhamento").textContent="Origem e aplicação — "+textoContexto();
  $("tituloOrigem").textContent=$("tipoReceita").selectedOptions[0].text+" — "+textoContexto();
  $("tituloDespesas").textContent="Despesas contratadas por categoria — "+textoContexto();
@@ -327,6 +327,32 @@ function atualizarKPIs() {
   $("kpiRecVoto").textContent = e.votos > 0 ? reais(Math.round(e.receitas * 100 / e.votos)) : "Não calculável";
 }
 
+const PALETA=["#5368e9","#14b990","#f08a53","#9b6be6","#e36b79","#18a4c9","#e7b44f","#83b963","#b76cae"];
+function colorir(nome){let n=0;for(const ch of String(nome))n=(n*33+ch.charCodeAt(0))>>>0;return PALETA[n%PALETA.length];}
+function rankingColorido(id,itens,unidade){
+ const a=[...itens].filter(d=>Number.isFinite(d.valor)).sort((x,y)=>y.valor-x.valor);
+ const altura=Math.max(325,Math.min(580,a.length*29+110));$(id).style.height=altura+"px";
+ Plotly.react(id,[{type:"bar",orientation:"h",y:a.map(d=>d.nome).reverse(),x:a.map(d=>d.valor).reverse(),marker:{color:a.map(d=>colorir(d.nome)).reverse()},
+ customdata:a.map(d=>unidade==="Votos"?inteiro(d.valor):reais(Math.round(d.valor*100))).reverse(),
+ hovertemplate:"<b>%{y}</b>: %{customdata}<extra></extra>"}],
+ {...LAYOUT_BASE,height:altura,margin:{l:175,r:16,t:12,b:60},xaxis:{title:unidade,automargin:true},yaxis:{automargin:true}},CONFIG);
+}
+function graficoEficiencia(){
+ const grupos=grupoPartidos(dadosFiltrados).map(g=>({...g,s:estatisticas(g.dados)})).filter(g=>g.s.votos>0);
+ $("tituloEficiencia").textContent="Eficiência financeira — "+textoContexto();
+ rankingColorido("graficoEficienciaPartidos",grupos.map(g=>({nome:g.nome,valor:custoVoto(g.s,"contratadas")})),"R$/voto");
+ rankingColorido("graficoReceitaVoto",grupos.map(g=>({nome:g.nome,valor:custoVoto(g.s,"receitas")})),"R$/voto");
+ const candidatos=dadosFiltrados.filter(x=>x.vinculo_validado&&x.votos>0);
+ const pontos=grupoPartidos(candidatos).map(g=>({type:"scattergl",mode:"markers",name:g.nome,
+ x:g.dados.map(c=>c.votos),y:g.dados.map(c=>(c.financeiro_centavos.despesas_contratadas??0)/(100*c.votos)),
+ text:g.dados.map(c=>c.candidato),marker:{color:colorir(g.nome),size:8,opacity:.68},
+ hovertemplate:"<b>%{text}</b><br>"+g.nome+"<br>Votos: %{x:,}<br>Custo contratado/voto: R$ %{y:,.2f}<extra></extra>"}));
+ Plotly.react("graficoEficienciaDispersao",pontos,{...LAYOUT_BASE,height:365,margin:{l:75,r:20,t:15,b:65},showlegend:false,
+ xaxis:{title:"Votos nominais válidos",rangemode:"tozero"},yaxis:{title:"R$/voto",rangemode:"tozero"}},CONFIG);
+ const keys=["receitas_total","despesas_contratadas","despesas_pagas"];
+ Plotly.react("graficoEficienciaTotais",[{type:"bar",x:["Receitas","Contratadas","Pagas"],y:keys.map(k=>dinheiro(soma(dadosFiltrados,k))),marker:{color:["#14b990","#956be6","#f08a53"]},hovertemplate:"%{x}<br>R$ %{y:,.2f}<extra></extra>"}],
+ {...LAYOUT_BASE,height:365,margin:{l:80,r:18,t:20,b:75},yaxis:{title:"R$"}},CONFIG);
+}
 const LAYOUT_BASE = {
   paper_bgcolor: "#ffffff",
   plot_bgcolor: "#ffffff",
@@ -406,7 +432,7 @@ function graficoPartidos() {
   const ordenados = [...grupos.entries()]
     .sort((a, b) => b[1] - a[1]);
 
-  const altura = Math.max(540, ordenados.length * 36 + 125);
+  const altura = Math.max(360, ordenados.length * 29 + 115);
   $("graficoPartidos").style.height = `${altura}px`;
 
   Plotly.react("graficoPartidos", [{
@@ -414,7 +440,7 @@ function graficoPartidos() {
     orientation: "h",
     x: ordenados.map(d => dinheiro(d[1])).reverse(),
     y: ordenados.map(d => d[0]).reverse(),
-    marker: {color: "#1555a5"},
+    marker: {color: ordenados.map(d => colorir(d[0])).reverse()},
     hovertemplate: "%{y}<br>R$ %{x:,.2f}<extra></extra>"
   }], {
     ...LAYOUT_BASE,
@@ -579,6 +605,8 @@ function renderizarAba() {
   } else if (abaAtual === "comparacao") {
     configurarComparacao();
     graficoComparacao();
+  } else if (abaAtual === "eficiencia") {
+    graficoEficiencia();
   } else if (abaAtual === "detalhamento") {
     graficosDetalhamento();
   }
@@ -674,6 +702,7 @@ function configurarEventos() {
       partidos: ["graficoPartidos","graficoCustoPartidos","graficoVotosPartidos"],
       comparacao:["graficoComparacaoFinanceira","graficoComparacaoEleitoral"],
       detalhamento:["graficoOrigem","graficoDespesas"],
+      eficiencia:["graficoEficienciaPartidos","graficoEficienciaDispersao","graficoReceitaVoto","graficoEficienciaTotais"],
       candidatos: ["graficoCandidatos"]
     };
 
